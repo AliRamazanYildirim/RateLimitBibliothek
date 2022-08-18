@@ -8,14 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOptions();
 builder.Services.AddMemoryCache();
-builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateBegerenzung"));
-builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateBegerenzungPolitiken"));
-builder.Services.AddInMemoryRateLimiting();
+//builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateBegerenzung"));
+//builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateBegerenzungPolitiken"));
 //builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.Configure<ClientRateLimitOptions>(builder.Configuration.GetSection("ClientRateBegerenzung"));
+builder.Services.Configure<ClientRateLimitPolicies>(builder.Configuration.GetSection("ClientRateBegerenzungPolitiken"));
+//builder.Services.AddSingleton<IClientPolicyStore, MemoryCacheClientPolicyStore>();
+
 //builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+builder.Services.AddInMemoryRateLimiting();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,6 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseIpRateLimiting();
+
+app.UseClientRateLimiting();
 
 app.UseHttpsRedirection();
 
