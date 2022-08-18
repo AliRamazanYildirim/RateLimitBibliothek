@@ -1,6 +1,19 @@
+using AspNetCoreRateLimit;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddOptions();
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateBegerenzung"));
+builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateLimitPolicies"));
+builder.Services.AddInMemoryRateLimiting();
+//builder.Services.AddSingleton<IIpPolicyStore, DistributedCacheIpPolicyStore>();
+//builder.Services.AddSingleton<IRateLimitCounterStore, DistributedCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,6 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseIpRateLimiting();
 
 app.UseHttpsRedirection();
 
