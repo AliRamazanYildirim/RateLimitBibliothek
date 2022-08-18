@@ -12,6 +12,12 @@ namespace RateLimit.API.Controllers
         {
             return Ok(new { Id = 1, Name = "Ali Ramazan", Alter = 28 });
         }
+        //Get api/kunde/ali/28
+        [HttpGet("{name}/{alter}")]
+        public IActionResult GeheZuKunde(string name, int alter)
+        {
+            return Ok(name);
+        }
         [HttpPost]
         public IActionResult KundeSpeichern()
         {
@@ -22,5 +28,6 @@ namespace RateLimit.API.Controllers
         {
             return Ok();
         }
+        
     }
 }
