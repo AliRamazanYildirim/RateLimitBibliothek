@@ -12,5 +12,15 @@ namespace RateLimit.API.Controllers
         {
             return Ok(new { Id = 1, Name = "Ali Ramazan", Alter = 28 });
         }
+        [HttpPost]
+        public IActionResult KundeSpeichern()
+        {
+            return Ok(new {Id=2, Name = "Rabia",Alter=28});
+        }
+        [HttpPut]
+        public IActionResult KundeAktualisieren()
+        {
+            return Ok();
+        }
     }
 }
